@@ -55,11 +55,10 @@ class CatalogDataInitializer implements DataInitializer {
 	 */
 	@Override
 	public void initialize() {
-
-		if (videoCatalog.findAll().iterator().hasNext()) {
-			return;
-		}
-
+//
+//		if (videoCatalog.findAll().iterator().hasNext()) {
+//			return;
+//		}
 		LOG.info("Creating default catalog entries.");
 
 		videoCatalog.save(new Disc("Last Action Hero", "lac", Money.of(100, EURO), "Comedy", DiscType.DVD));
