@@ -15,6 +15,7 @@
  */
 package videoshop.catalog;
 import java.util.List;
+import org.salespointframework.catalog.Product;
 import videoshop.catalog.Disc.DiscType;
 
 import org.salespointframework.catalog.Catalog;
@@ -39,7 +40,7 @@ public interface VideoCatalog extends Catalog<Disc> {
 	 */
 	Streamable<Disc> findByType(DiscType type, Sort sort);
 
-	List<Disc> findByGenreAndIdNot(String genre, Long id);
+	Streamable<Disc> findByGenreAndIdNot(String genre, Product.ProductIdentifier id);
 
 	/**
 	 * Returns all {@link Disc}s by type ordered by their identifier.
