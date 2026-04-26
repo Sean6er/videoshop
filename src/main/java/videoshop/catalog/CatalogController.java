@@ -18,6 +18,7 @@ package videoshop.catalog;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import videoshop.catalog.Disc.DiscType;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
@@ -73,25 +74,26 @@ class CatalogController {
 	// Befindet sich die angesurfte Url in der Form /foo/5 statt /foo?bar=5 so muss man @PathVariable benutzen
 	// Lektüre: http://spring.io/blog/2009/03/08/rest-in-spring-3-mvc/
 @GetMapping("/disc/{disc}")
-String detail(@PathVariable Disc disc, Model model, CommentAndRating form) {
+public String detail(Disc disc, Model model, CommentAndRating form) {
 
-    var quantity = inventory.findByProductIdentifier(disc.getId())
-        .map(InventoryItem::getQuantity)
-        .orElse(NONE);
+	    Quantity quantity = inventory.findByProductIdentifier(disc.getId())
+	            .map(InventoryItem::getQuantity)
+	            .orElse(NONE);
 
-    model.addAttribute("disc", disc);
-    model.addAttribute("quantity", quantity);
-    model.addAttribute("orderable", quantity.isGreaterThan(NONE));
+	    model.addAttribute("disc", disc);
+	    model.addAttribute("quantity", quantity);
+	    model.addAttribute("orderable", quantity.isGreaterThan(NONE));
 
-    var recommendations = catalog
-            .findByGenreAndIdNot(disc.getGenre(), disc.getId())
-            .stream()
-            .limit(3)
-            .toList();
+	
+	    List<Disc> recommendations = catalog
+	            .findByGenreAndIdNot(disc.getGenre(), disc.getId())
+	            .stream()
+	            .limit(3)
+	            .toList();
 
-    model.addAttribute("recommendations", recommendations);
+	    model.addAttribute("recommendations", recommendations);
 
-    return "detail";
+	    return "detail";
 }
 
 	@PostMapping("/disc/{disc}/comments")
