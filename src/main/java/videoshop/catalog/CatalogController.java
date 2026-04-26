@@ -72,19 +72,27 @@ class CatalogController {
 	// (｡◕‿◕｡)
 	// Befindet sich die angesurfte Url in der Form /foo/5 statt /foo?bar=5 so muss man @PathVariable benutzen
 	// Lektüre: http://spring.io/blog/2009/03/08/rest-in-spring-3-mvc/
-	@GetMapping("/disc/{disc}")
-	String detail(@PathVariable Disc disc, Model model, CommentAndRating form) {
+@GetMapping("/disc/{disc}")
+String detail(@PathVariable Disc disc, Model model, CommentAndRating form) {
 
-		var quantity = inventory.findByProductIdentifier(disc.getId()) //
-				.map(InventoryItem::getQuantity) //
-				.orElse(NONE);
+    var quantity = inventory.findByProductIdentifier(disc.getId())
+        .map(InventoryItem::getQuantity)
+        .orElse(NONE);
 
-		model.addAttribute("disc", disc);
-		model.addAttribute("quantity", quantity);
-		model.addAttribute("orderable", quantity.isGreaterThan(NONE));
+    model.addAttribute("disc", disc);
+    model.addAttribute("quantity", quantity);
+    model.addAttribute("orderable", quantity.isGreaterThan(NONE));
 
-		return "detail";
-	}
+    var recommendations = catalog
+            .findByGenreAndIdNot(disc.getGenre(), disc.getId())
+            .stream()
+            .limit(3)
+            .toList();
+
+    model.addAttribute("recommendations", recommendations);
+
+    return "detail";
+}
 
 	@PostMapping("/disc/{disc}/comments")
 	public String comment(@PathVariable Disc disc, @Valid CommentAndRating form, Errors errors) {
