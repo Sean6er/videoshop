@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package videoshop.catalog;
-
+import java.util.List;
 import videoshop.catalog.Disc.DiscType;
 
 import org.salespointframework.catalog.Catalog;
