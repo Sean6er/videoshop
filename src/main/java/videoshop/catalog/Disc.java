@@ -64,6 +64,9 @@ public class Disc extends Product {
 	public String getGenre() {
 		return genre;
 	}
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
 
 	public void addComment(Comment comment) {
 		comments.add(comment);
